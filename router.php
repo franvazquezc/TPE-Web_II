@@ -56,6 +56,6 @@ switch ($params[0]) {
         $controller->delete($params[1]);
         break;
     default: 
-        echo 'error';
+        echo "404 Page Not Found";
         break;
 }
