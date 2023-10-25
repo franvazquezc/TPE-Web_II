@@ -9,11 +9,11 @@ class ProductView {
         require 'templates/productDetails.phtml';
     }
 
-    public function showError($error) {
-        require 'templates/error.phtml';
+    public function showProductAdmin($products, $categories) {
+        require 'templates/productAdmin.phtml';
     }
 
-    public function showAdmin($products) {
-        require 'templates/productAdminForm.phtml';
+    public function showProductUpdateForm($id, $categories) {
+        require 'templates/productUpdateForm.phtml';
     }
 }

@@ -5,19 +5,21 @@ require_once './app/views/product.view.php';
 class ProductController {
     private $model;
     private $view;
+    private $categoryModel;
 
     public function __construct() {
         $this->model = new ProductModel();
         $this->view = new ProductView();
+        $this->categoryModel = new CategoryModel();
     }
 
     public function showProducts() {
-        $products = $this->model->getProducts();
+        $products = $this->model->getProductsWithCategory();
         $this->view->showProducts($products);
     }
 
     public function showProduct($id) {
-        $product = $this->model->getProduct($id);
+        $product = $this->model->getProductWithCategory($id);
         $this->view->showProduct($product);
     }
 
@@ -26,35 +28,58 @@ class ProductController {
         $this->view->showProducts($products);
     }
 
-    public function showAdmin() {
+    public function showProductAdmin() {
         $products = $this->model->getProducts();
-        $this->view->showAdmin($products);
+        $categories = $this->categoryModel->getCategories();
+        $this->view->showProductAdmin($products, $categories);
     }
 
-    public function add() {
+    public function addProduct() {
         $name = $_POST['name'];
         $description = $_POST['description'];
         $price = $_POST['price'];
         $stock = $_POST['stock'];
-        $brand = $_POST['brand'];
         $category = $_POST['category'];
 
-        if (empty($name) || empty($description || empty($price) || empty($stock) || empty($brand) || empty($category))) {
-            $this->view->showError("Debe completar todos los campos");
-            return;
-        } 
+        if (empty($name) || empty($description) || empty($price) || empty($stock) || empty($category)) {
+            header('Location: ' . BASE_URL . 'inputError');
+            die();
+        }
 
-        $id = $this->model->insertProduct($name, $description, $price, $stock, $brand, $category);
+        $done = $this->model->insertProduct($name, $description, $price, $stock, $category);
         
-        if ($id) {
-            header('Location: ' . BASE_URL . '/admin');
+        if ($done) {
+            header('Location: ' . BASE_URL . 'productAdmin');
         } else {
-            $this->view->showError("Error al insertar la tarea");
+            header('Location: ' . BASE_URL . 'formError');
         }
     }
 
-    public function delete($id) {
+    public function deleteProduct($id) {
         $this->model->deleteProduct($id);
-        header('Location: ' . BASE_URL . '/admin');
+        header('Location: ' . BASE_URL . 'productAdmin');
+    }
+
+    
+    public function showProductUpdateForm($id) {
+        $categories = $this->categoryModel->getCategories();
+        $this->view->showProductUpdateForm($id, $categories);
+    }
+    
+    public function updateProduct($id) {
+        $name = $_POST['name'];
+        $description = $_POST['description'];
+        $price = $_POST['price'];
+        $stock = $_POST['stock'];
+        $category = $_POST['category'];
+        
+        if (empty($name) || empty($description) || empty($price) || empty($stock) || empty($category)) {
+            header('Location: ' . BASE_URL . 'inputError');
+            die();
+        }
+
+        $this->model->updateProduct($name, $description, $price, $stock, $category, $id);
+
+        header('Location: ' . BASE_URL . 'productAdmin');
     }
 }

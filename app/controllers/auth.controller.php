@@ -17,18 +17,18 @@ class AuthController {
     }
 
     public function auth() {
-        $email = $_POST['email'];
+        $userName = $_POST['userName'];
         $password = $_POST['password'];
 
-        if (empty($email) || empty($password)) {
+        if (empty($userName) || empty($password)) {
             $this->view->showLogin('Complete todos los datos');
             return;
         }
 
-        $user = $this->model->getByEmail($email);
+        $user = $this->model->getByUserName($userName);
         if ($user && password_verify($password, $user->password)) {
             AuthHelper::login($user);
-            header('Location: ' . BASE_URL . 'admin');
+            header('Location: ' . BASE_URL . 'productAdmin');
         } else {
             $this->view->showLogin('Usuario inválido');
         }

@@ -1,5 +1,5 @@
-<?php require 'templates/header.phtml' ?>
-
+<?php require 'templates/header.phtml'; ?>
+    
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -8,7 +8,7 @@
                         Cargar Producto
                     </div>
                     <div class="card-body">
-                        <form action="add" method="POST">
+                        <form action="addProduct" method="POST">
                             <div class="form-group">
                                 <label>Nombre:</label>
                                 <input required name="name" type="text" class="form-control" placeholder="Ingrese el nombre del producto">
@@ -26,12 +26,12 @@
                                 <input required name="stock" type="number" class="form-control" placeholder="Ingrese el stock del producto">
                             </div>
                             <div class="form-group">
-                                <label>Marca:</label>
-                                <input required name="brand" type="text" class="form-control" placeholder="Ingrese la marca del producto">
-                            </div>
-                            <div class="form-group">
                                 <label>Categoría:</label>
-                                <input required name="category" type="text" class="form-control" placeholder="Ingrese la categoría del producto">
+                                <select name="category" class="form-control">
+                                    <?php foreach($categories as $category): ?>
+                                        <option value="<?=$category->category_id?>"><?=$category->name?></option>
+                                    <?php endforeach ?>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary mt-2">Guardar Producto</button>
                         </form>
@@ -40,18 +40,27 @@
             </div>
         </div>
     </div>
-    
-    <ul class="list-group mt-3">
-    <?php foreach($products as $product): ?>
-        <li class="list-group-item item-task">
-            <div>
-                <b><?= $product->name?></b> | (Id: <?= $product->product_id ?>)
-            </div>
-            <div class="actions">
-                <a href="delete/<?=$product->product_id?>" type="button" class='btn btn-danger ml-auto'>Borrar</a>
-            </div>
-        </li>
-    <?php endforeach ?>
-    </ul>
+    <div class="card mt-2">
+        <div class="card-header">
+            Productos
+        </div>
+        <div class="card-body">
+            <ul class="list-group mt-3">
+            <?php foreach($products as $product): ?>
+                <li class="list-group-item item-task">
+                    <div>
+                        <b><?= $product->name?></b> | (Id: <?= $product->product_id ?>)
+                    </div>
+                    <div class="actions">
+                        <a href="deleteProduct/<?=$product->product_id?>" type="button" class='btn btn-danger ml-auto'>Borrar</a>
+                    </div>
+                    <div class="actions">
+                        <a href="updateProductForm/<?=$product->product_id?>" type="button" class='btn btn-warning my-2'>Modificar</a>
+                    </div>
+                </li>
+            <?php endforeach ?>
+            </ul>
+        </div>
+    </div>
 
 <?php require 'templates/footer.phtml' ?>

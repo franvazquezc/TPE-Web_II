@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-10-2023 a las 04:08:19
+-- Tiempo de generación: 25-10-2023 a las 09:12:55
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -24,24 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `brands`
---
-
-CREATE TABLE `brands` (
-  `name` varchar(45) NOT NULL,
-  `brand_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `brands`
---
-
-INSERT INTO `brands` (`name`, `brand_id`) VALUES
-('Marca 1', 1);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `categories`
 --
 
@@ -56,10 +38,7 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`name`, `category_id`) VALUES
 ('Categoría 1', 1),
-('Categoría 2', 2),
-('Categoría 3', 3),
-('Categoría 4', 4),
-('Categoría 5', 5);
+('Categoría 2', 2);
 
 -- --------------------------------------------------------
 
@@ -73,7 +52,6 @@ CREATE TABLE `products` (
   `description` text NOT NULL,
   `price` double NOT NULL,
   `stock` int(11) NOT NULL,
-  `brand_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -81,9 +59,9 @@ CREATE TABLE `products` (
 -- Volcado de datos para la tabla `products`
 --
 
-INSERT INTO `products` (`product_id`, `name`, `description`, `price`, `stock`, `brand_id`, `category_id`) VALUES
-(2, 'Producto 1', 'Descripción del producto 1.', 200, 10, 1, 1),
-(3, 'Producto 2', 'Descripción del producto 2.', 100, 5, 1, 1);
+INSERT INTO `products` (`product_id`, `name`, `description`, `price`, `stock`, `category_id`) VALUES
+(8, 'Producto 1', 'Descripción del producto 1.', 1120, 12, 1),
+(13, 'Producto 2', 'Descripción del producto 2.', 140, 15, 2);
 
 -- --------------------------------------------------------
 
@@ -93,7 +71,7 @@ INSERT INTO `products` (`product_id`, `name`, `description`, `price`, `stock`, `
 
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
-  `email` varchar(45) NOT NULL,
+  `user_name` varchar(45) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -101,18 +79,12 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `password`) VALUES
-(1, 'admin@demo.com', '$2a$12$EAuz5EpvBAabqxuuwNBX.eGSZsCw1HJK8.9C5CU4VvUxGEAKlhaK2');
+INSERT INTO `users` (`user_id`, `user_name`, `password`) VALUES
+(1, 'webadmin', '$2a$12$Mzp6twU/EDdYV5ThsaRSmOnokunKQfgT5wvqhsYbsVKg8SYXZnpNW');
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `brands`
---
-ALTER TABLE `brands`
-  ADD PRIMARY KEY (`brand_id`);
 
 --
 -- Indices de la tabla `categories`
@@ -125,7 +97,6 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`),
-  ADD KEY `FK_id_marca` (`brand_id`),
   ADD KEY `FK_id_categoria` (`category_id`);
 
 --
@@ -139,22 +110,16 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT de la tabla `brands`
---
-ALTER TABLE `brands`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT de la tabla `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -170,7 +135,6 @@ ALTER TABLE `users`
 -- Filtros para la tabla `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`),
   ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 COMMIT;
 

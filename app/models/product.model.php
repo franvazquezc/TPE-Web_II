@@ -1,15 +1,10 @@
 <?php
-require_once 'config.php'; 
+require_once 'model.php';
 
-class ProductModel {
-    private $db;
-
-    function __construct() {
-        $this->db = new PDO('mysql:host='.MYSQL_HOST.';dbname='. MYSQL_DB .';charset=utf8', MYSQL_USER, MYSQL_PASS);
-    }
+class ProductModel extends Model {
 
     function getProducts() {
-        $query = $this->db->prepare('SELECT * FROM products');
+        $query = $this->db->prepare('SELECT product_id, name, description, category_id FROM products');
         $query->execute();
 
         $products = $query->fetchAll(PDO::FETCH_OBJ);
@@ -17,8 +12,22 @@ class ProductModel {
         return $products;
     }
 
-    function getProduct($id) {
-        $query = $this->db->prepare('SELECT * FROM products WHERE product_id = ?');
+    function getProductsWithCategory() {
+        $query = $this->db->prepare('SELECT products.*, categories.name AS category 
+                                    FROM products INNER JOIN categories 
+                                    ON products.category_id = categories.category_id');
+        $query->execute();
+
+        $products = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $products;
+    }
+
+    function getProductWithCategory($id) {
+        $query = $this->db->prepare('SELECT products.*, categories.name AS category 
+                                    FROM products INNER JOIN categories 
+                                    ON products.category_id = categories.category_id
+                                    WHERE product_id = ?');
         $query->execute([$id]);
 
         $product = $query->fetch(PDO::FETCH_OBJ);
@@ -27,7 +36,10 @@ class ProductModel {
     }
 
     function getProductsByCategory($category_id) {
-        $query = $this->db->prepare('SELECT * FROM products WHERE category_id = ?');
+        $query = $this->db->prepare('SELECT products.*, categories.name AS category 
+                                    FROM products INNER JOIN categories 
+                                    ON products.category_id = categories.category_id
+                                    WHERE products.category_id = ?');
         $query->execute([$category_id]);
 
         $products = $query->fetchAll(PDO::FETCH_OBJ);
@@ -35,11 +47,9 @@ class ProductModel {
         return $products;
     }
 
-    //Ver efecto de relaciones entre tablas.
-
-    function insertProduct($name, $description, $price, $stock, $brand_id, $category_id) {
-        $query = $this->db->prepare('INSERT INTO products (name, description, price, stock, brand_id, category_id) VALUES(?,?,?,?,?,?)');
-        $query->execute([$name, $description, $price, $stock, $brand_id, $category_id]);
+    function insertProduct($name, $description, $price, $stock, $category_id) {
+        $query = $this->db->prepare('INSERT INTO products (name, description, price, stock, category_id) VALUES(?,?,?,?,?)');
+        $query->execute([$name, $description, $price, $stock, $category_id]);
 
         return $this->db->lastInsertId();
     }
@@ -49,5 +59,10 @@ class ProductModel {
         $query->execute([$id]);
     }
 
-    //Falta módificaciones.  
+    function updateProduct($name, $description, $price, $stock, $category_id, $id) {
+        $query = $this->db->prepare('UPDATE products 
+                                    SET name = ?, description = ?, price = ?, stock = ?, category_id = ? 
+                                    WHERE product_id = ?');
+        $query->execute([$name, $description, $price, $stock, $category_id, $id]);
+    }
 }

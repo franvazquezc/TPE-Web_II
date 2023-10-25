@@ -5,7 +5,11 @@ class CategoryView {
         require 'templates/categoryList.phtml';
     }
 
-    public function showError($error) {
-        require 'templates/error.phtml';
+    public function showCategoryAdmin($categories) {
+        require 'templates/categoryAdmin.phtml';
+    }
+
+    public function showCategoryUpdateForm($id) {
+        require 'templates/categoryUpdateForm.phtml';
     }
 }

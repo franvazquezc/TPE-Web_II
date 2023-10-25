@@ -1,0 +1,24 @@
+<?php require 'templates/header.phtml'; ?>
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Modificar categoría
+                    </div>
+                    <div class="card-body">
+                        <form action="updateCategory/<?=$id?>" method="POST">
+                            <div class="form-group">
+                                <label>Nombre:</label>
+                                <input required name="name" type="text" class="form-control" placeholder="Ingrese el nombre de la categoría">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2">Modificar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php require 'templates/footer.phtml' ?>
