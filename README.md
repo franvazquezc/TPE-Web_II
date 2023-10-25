@@ -1,6 +1,5 @@
 # TPE-Web_II
 ## Integrantes: 
-  - Valentin Thomas: valen.thomas02@gmail.com
   - Francisco Vazquez: franvazquezcarrasco@gmail.com
 ## Temática:
 ### Sitio web comercial
